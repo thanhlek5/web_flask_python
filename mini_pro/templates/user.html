@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Danh sách người dùng</h2>
+    <ul>
+        {% for key, value in users.items() %}
+            <li>👤 {{ keys }} - {{ values }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">← Quay lại trang chủ</a>
+</div>
+{% endblock %}

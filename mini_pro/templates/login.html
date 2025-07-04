@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block content%}
+<head>
+    <title>Login</title>
+</head>
+
+<div class = 'container' >
+    <form method = 'POST'>
+        <lable>Tên tài khoản</lable><br><br>
+        <input name = 'username' ><br><br>
+        <lable>Mật khẩu</lable><br><br>
+        <input name = 'password' type = 'password'><br><br>
+        <button type = 'submit' >Đăng nhập</button>
+        <button><a href = '/register'> Đăng ký</a></button>
+
+    </form>
+</div>
+
+{%endblock%}
