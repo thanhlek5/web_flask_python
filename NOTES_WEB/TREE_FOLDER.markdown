@@ -6,6 +6,8 @@ notes_app/
 │   ├── register.html
 │   ├── notes.html
 │   └── add_note.html
+│   └── edit_note.html
+│   └── main.html
 ├── /static/
 │   └── style.css
 ├── /instance/
