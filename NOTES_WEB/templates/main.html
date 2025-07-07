@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{%block content%}
+
+<header class="page-header">
+        <button class="logout-btn"><a href = '/logout'>Đăng xuất</a></button>
+    </header>
+
+    <main class="main-content">
+        <h1 class="title">🌿 Ghi chú cá nhân của Lá 🌿</h1>
+        
+        <div class="action-box">
+            <div class="card">
+                <a href="/add">Tạo Note mới</a>
+            </div>
+            <div class="card">
+                <a href="/note">Xem các Note</a>
+            </div>
+        </div>
+    </main>
+
+{%endblock%}

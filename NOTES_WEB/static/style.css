@@ -1,0 +1,441 @@
+
+
+
+/* Thiết lập chung cho body */
+
+
+
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #5F8D6E; /* Màu nền xanh rêu giống ảnh 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* --- PHẦN CSS QUAN TRỌNG NHẤT --- */
+
+/* Định dạng cho header */
+.page-header {
+    width: 100%;
+    padding: 20px 40px; /* Thêm khoảng đệm */
+    box-sizing: border-box; /* Giúp padding không ảnh hưởng tới width */
+    display: flex;
+    justify-content: flex-end; /* Đẩy item sang phải */
+}
+
+/* Định dạng cho nút Đăng xuất */
+.logout-btn {
+    background-color: #4a6f44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+}
+.logout-btn:hover {
+    background-color: #3e5d39;
+}
+
+/* --- HẾT PHẦN QUAN TRỌNG --- */
+
+
+/* Định dạng cho nội dung chính */
+.main-content {
+    flex-grow: 1; /* Giúp main chiếm hết không gian còn lại */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn giữa nội dung theo chiều dọc */
+    align-items: center; /* Căn giữa nội dung theo chiều ngang */
+    text-align: center;
+    padding-bottom: 100px; /* Đẩy nội dung lên cao một chút */
+}
+
+.title {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+}
+
+/* Hộp chứa 2 nút Xem/Tạo Note */
+.action-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.card a {
+    background-color: #4a6f44;
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: #06350b;
+    text-decoration: none;
+    font-weight: bold;
+}
+.card a:hover {
+    background-color: #3e5d39;
+}
+a {
+    color: #06350b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Hộp chứa form đăng nhập */
+.login-container {
+    width: 100%;
+    max-width: 400px; /* Giới hạn chiều rộng tối đa của form */
+    padding: 20px;
+    margin: auto;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Căn giữa các thành phần trong form */
+    margin: auto;
+}
+
+/* Tiêu đề "Đăng nhập" */
+.form-title {
+    color: rgb(217, 174, 30);
+    font-size: 3em; /* Kích thước chữ to */
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+/* Nhóm chứa label và input */
+.input-group {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Định dạng cho các nhãn (Tên đăng nhập, Mật khẩu) */
+.input-group label {
+    display: block;
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Định dạng cho các ô nhập liệu */
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: white;
+    border: none; /* Bỏ viền */
+    font-size: 1em;
+    outline: none; /* Bỏ đường viền khi focus */
+}
+
+/* Nút Đăng nhập */
+.submit-btn {
+    width: auto;
+    padding: 10px 30px;
+    margin-top: 15px;
+    background-color: #e0e0e0; /* Màu nền xám nhạt */
+    color: #333; /* Màu chữ đen */
+    border: 1px solid #a0a0a0; /* Viền xám đậm hơn */
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #d0d0d0; /* Hiệu ứng khi di chuột qua */
+}
+
+}
+
+/* Hộp chứa form */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tiêu đề */
+.form-title {
+    color: white;
+    font-size: 3em;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+/* Nhóm chứa label và input */
+.input-group {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Định dạng cho các nhãn */
+.input-group label {
+    display: block;
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Định dạng cho các ô nhập liệu (áp dụng cho cả text, password, và email) */
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: white;
+    border: none;
+    font-size: 1em;
+    outline: none;
+}
+
+/* Nút bấm */
+.submit-btn {
+    width: auto;
+    padding: 10px 30px;
+    margin-top: 15px;
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #a0a0a0;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #d0d0d0;
+}
+
+/* Kiểu dáng cho thẻ ghi chú */
+
+.note-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    width: 100%;
+    margin: auto;
+    align-items: center;
+    max-width: 500px;
+    position: relative;
+    box-sizing: border-box;
+    padding-bottom: 80px; /* Tăng padding dưới để có không gian cho các nút */
+}
+
+/* Ô nhập tiêu đề và nội dung (không đổi) */
+.note-title {
+    border: none;
+    outline: none;
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 0;
+    color: #1c1e21;
+}
+.note-body {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+    min-height: 200px;
+    resize: none;
+    padding: 0;
+    color: #606770;
+    line-height: 1.5;
+}
+
+/* ----- PHẦN CẬP NHẬT VÀ THÊM MỚI ----- */
+
+/* Vùng chứa các nút bấm */
+.button-container {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    display: flex; /* Dùng flexbox để xếp các nút cạnh nhau */
+    gap: 8px; /* Tạo khoảng cách giữa hai nút */
+}
+
+/* Kiểu dáng cho nút Quay lại */
+.back-button {
+    background-color: #e4e6eb; /* Màu xám nhạt */
+    color: #1c1e21; /* Màu chữ tối */
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none; /* Bỏ gạch chân của thẻ <a> */
+    transition: background-color 0.2s ease;
+}
+
+/* Hiệu ứng khi di chuột qua nút Quay lại */
+.back-button:hover {
+    background-color: #d8dbdf;
+}
+
+/* Kiểu dáng cho nút Lưu (bỏ phần định vị) */
+.save-button {
+    background-color: #0866ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Hiệu ứng khi di chuột qua nút Lưu (không đổi) */
+.save-button:hover {
+    background-color: #0655d4;
+}
+
+
+
+/*
+ * Container chính của ứng dụng
+ * Giới hạn chiều rộng để dễ đọc trên màn hình lớn.
+ */
+.notes-app-container {
+    width: 100%;
+    max-width: 600px; /* Chiều rộng tối đa cho giao diện */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/*
+ * Phần đầu (Header)
+ * Chứa tiêu đề chính của ứng dụng.
+ */
+.notes-header {
+    padding: 16px 20px;
+}
+
+.notes-header h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+/*
+ * Thanh tìm kiếm
+ */
+.search-bar-container {
+    padding: 0 20px 10px 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #2c2c2e;
+    color: #f2f2f7;
+    font-size: 17px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #8e8e93;
+}
+
+/*
+ * Danh sách các ghi chú
+ * overflow-y: auto cho phép cuộn khi có nhiều ghi chú.
+ */
+.notes-list {
+    flex-grow: 1; /* Lấp đầy không gian còn lại */
+    overflow-y: auto;
+    padding: 0 20px;
+}
+
+/*
+ * Kiểu dáng cho từng mục ghi chú
+ */
+.note-item {
+    background-color: #2c2c2e;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
+
+.note-item:hover {
+    background-color: #3a3a3c;
+}
+
+.note-item-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #fff;
+    /* Ngăn tiêu đề quá dài */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note-item-snippet {
+    font-size: 15px;
+    margin: 0;
+    color: #8e8e93;
+    /* Ngăn nội dung quá dài */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*
+ * Phần chân trang (Footer)
+ * Chứa nút tạo ghi chú mới.
+ */
+.notes-footer {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.new-note-button {
+    background-color: #ffcc00; /* Màu vàng đặc trưng của Notes */
+    color: #1c1c1e;
+    border: none;
+    border-radius: 50%; /* Bo tròn thành hình tròn */
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.new-note-button:hover {
+    transform: scale(1.05);
+}
+
+.new-note-button svg {
+    width: 28px;
+    height: 28px;
+}

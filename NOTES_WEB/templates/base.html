@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = 'stylesheet' href = '{{url_for('static', filename = 'style.css')}}' >
+    <title>{%block title%}NOTE{%endblock%}</title>
+</head>
+<body>
+
+
+
+    {%block content%}
+    <main class="main-content">
+        <h1 class="title">🌿 Ghi chú cá nhân của Lá 🌿</h1>
+        <div class="action-box">
+            <div class="card">
+                <a href="/login">Đăng nhập</a>
+            </div>
+            <div class="card">
+                <a href="/register">Đăng ký</a>
+            </div>
+        </div>
+        {%endblock%}
+    </main>
+
+</body>
+</html>

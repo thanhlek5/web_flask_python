@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+{%block content%}
+
+<div class="login-container">
+        <form class="login-form" method = 'POST'  >
+            <h1 class="form-title">Tạo tài khoản</h1>
+
+            <div class="input-group">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" name="password" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Tạo tài khoản</button>
+            <a href = '/'>Quay lại</a>
+        </form>
+    </div>
+
+{%endblock%}

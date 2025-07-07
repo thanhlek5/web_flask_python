@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+{%block content%}
+<form class="note-card" action="#" method="post">
+        
+        <input 
+            type="text" 
+            class="note-title" 
+            placeholder="Tiêu đề" 
+            name="note_title"
+            required>
+
+        <textarea 
+            class="note-body" 
+            placeholder="Nhập nội dung ghi chú của bạn..."
+            name="note_content"></textarea>
+        <div class="button-container">
+            <a href="/main" class="back-button">Quay lại</a>
+            
+            <button type="submit" class="save-button">Lưu</button>
+        </div>
+    </form>
+
+{%endblock%}
