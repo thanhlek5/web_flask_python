@@ -17,4 +17,15 @@
             <a href = '/'  >Quay lại</a>
         </form>
     </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for msg in messages %}
+        <li style="color:red;">{{ msg }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
 {%endblock%}

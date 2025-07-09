@@ -1,9 +1,9 @@
-from flask import Flask, render_template, url_for, redirect,flash ,request 
+from flask import Flask, render_template, url_for, redirect,flash, abort ,request 
 from flask_login import LoginManager,login_user, logout_user,login_required,current_user,UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import *
-
+from functools import wraps 
 # setup app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tetirgjkslvo1324314hh43hbhf4345j3h4gh5'
@@ -20,8 +20,10 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(150), unique = True)
     password = db.Column(db.String(200))
     email = db.Column(db.String(200))
-    
     notes = db.relationship('Note', backref = 'author', lazy = True)
+    
+    
+
 # bảng Note
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -77,10 +79,10 @@ def register():
         exiting_user = User.query.filter_by(username = username).first()
         if not username or not pw or not email:
             flash('Hãy điền đầy đủ thông tin')
-            return render_template('/register')
+            return render_template('register.html')
         if exiting_user:
             flash('Tên tài khoản đã tồn tại')
-            return render_template('/register')
+            return render_template('register.html')
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
@@ -123,12 +125,24 @@ def edit_note(note_id):
         return redirect(url_for('note'))
     return render_template('edit_note.html', note=note)
 
+
+#  remove note 
+@app.route('/note/<int:note_id>/remove')
+@login_required
+def remove(note_id):
+    note =  Note.query.get_or_404(note_id)
+    if current_user.id != note.user_id:
+        return "Người dùng không thể xóa ghi chú này!!!"
+    db.session.delete(note)
+    db.session.commit()
+    return redirect(url_for('note'))    
+
+
 @app.route('/note')
 @login_required
 def note():
     notes = Note.query.filter_by(user_id = current_user.id).all()
     return render_template('note.html', notes = notes)
-
 
 
 
