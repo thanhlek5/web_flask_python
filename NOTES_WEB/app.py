@@ -7,7 +7,11 @@ from functools import wraps
 # setup app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tetirgjkslvo1324314hh43hbhf4345j3h4gh5'
-app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///D:\PYTHON\flask\NOTES_WEB\instance\user.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///D:\PYTHON\flask\NOTES_WEB\instance\user.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://test01:123@localhost/NOTE?driver=ODBC+Driver+17+for+SQL+Server'
+app.config['SQLALCHEMEMY_TRACK_MODIFICATIONS'] = False
+
+
 
 
 db = SQLAlchemy(app)
@@ -21,14 +25,14 @@ class User(UserMixin,db.Model):
     password = db.Column(db.String(200))
     email = db.Column(db.String(200))
     notes = db.relationship('Note', backref = 'author', lazy = True)
-    
+    role = db.Column(db.String(100),default = 'user')
     
 
 # bảng Note
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.String(100))
-    content = db.Column(db.Text)
+    title = db.Column(db.Unicode(500))
+    content = db.Column(db.UnicodeText)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
         # khóa ngoại trỏ tới user.id
@@ -56,6 +60,9 @@ def login():
         username = request.form.get('username')
         pw = request.form.get('password')
         user = User.query.filter_by(username = username).first()
+        if not user:
+            flash('Tài khoản không tồn tại hoặc nhập sai tên tài khoản!')
+            return render_template('login.html')
         if not check_password_hash(user.password,pw):
             flash('Nhập sai mật khẩu')
             return render_template('login.html')
@@ -115,7 +122,7 @@ def edit_note(note_id):
 
     # Kiểm tra quyền truy cập
     if note.user_id != current_user.id:
-        return "Không có quyền sửa ghi chú này", 403
+        abort(403)
 
     if request.method == 'POST':
         note.title = request.form.get('title')
@@ -126,13 +133,13 @@ def edit_note(note_id):
     return render_template('edit_note.html', note=note)
 
 
-#  remove note 
+#  xóa ghi chú
 @app.route('/note/<int:note_id>/remove')
 @login_required
 def remove(note_id):
     note =  Note.query.get_or_404(note_id)
     if current_user.id != note.user_id:
-        return "Người dùng không thể xóa ghi chú này!!!"
+        abort(403)
     db.session.delete(note)
     db.session.commit()
     return redirect(url_for('note'))    
@@ -143,8 +150,13 @@ def remove(note_id):
 def note():
     notes = Note.query.filter_by(user_id = current_user.id).all()
     return render_template('note.html', notes = notes)
-
-
+# --------------------------------------- Dùng để tạo tài khoản admin<----------------------------------------
+# @app.route('/create_admin')
+# def create_admin():
+#     user = User(username = 'admin',password = generate_password_hash('1234'),email = 'admin123@gmail.com' ,role = 'admin')
+#     db.session.add(user)
+#     db.session.commit()
+#     return redirect(url_for('login'))
 
 
 #  run app
