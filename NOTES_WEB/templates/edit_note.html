@@ -11,6 +11,15 @@
             value = {{note.title}}
             required
             >
+        <input 
+            type="text" 
+            class="note-title" 
+            placeholder="Tag" 
+            name="tag"
+
+            value="{% for tag in tags %}#{{ tag.name }} {% endfor %}"
+            required
+            >
         <textarea 
             class="note-body" 
             placeholder="Nhập nội dung ghi chú của bạn..."

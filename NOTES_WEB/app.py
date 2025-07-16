@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import *
 from functools import wraps 
+import re
 # setup app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tetirgjkslvo1324314hh43hbhf4345j3h4gh5'
@@ -28,6 +29,11 @@ class User(UserMixin,db.Model):
     role = db.Column(db.String(100),default = 'user')
     
 
+
+note_tag = db.Table('note_tag',
+                    db.Column('note_id',db.Integer,db.ForeignKey('note.id')),
+                    db.Column('Tag_id',db.Integer,db.ForeignKey('tag.id'))
+                    )
 # bảng Note
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -37,6 +43,12 @@ class Note(db.Model):
     
         # khóa ngoại trỏ tới user.id
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    tags = db.relationship('Tag', secondary = note_tag, backref = 'notes')
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100), unique = True)
 
 # tải dữ liệu người dùng
 @login_manager.user_loader
@@ -101,15 +113,30 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+#  làm sạch chuỗi tag
+def clear_tag(tags):
+    return re.findall(r'#\w+', tags)
 #  chức năng ghi chú 
 @app.route('/add', methods = ['GET','POST'])
 @login_required
 def add():
     if request.method == 'POST':
         title = request.form.get('note_title')
+        tag = request.form.get('Tag')
+        print(tag)
+        tag_raw = clear_tag(tag)
+        print(tag_raw)
         content = request.form.get('note_content')
         user_id = current_user.id
         note = Note(title = title, content = content, user_id = user_id)
+        for tag_text in tag_raw:
+            tag_name = tag_text.lstrip('#')
+            tag = Tag.query.filter_by(name = tag_name).first()
+            if not tag:
+                tag = Tag(name = tag_name)
+                db.session.add(tag)
+                note.tags.append(tag)
+                
         db.session.add(note)
         db.session.commit()
         return redirect(url_for('main'))
@@ -119,6 +146,8 @@ def add():
 @login_required
 def edit_note(note_id):
     note = Note.query.get_or_404(note_id)
+    tags =note.tags
+    
 
     # Kiểm tra quyền truy cập
     if note.user_id != current_user.id:
@@ -127,10 +156,22 @@ def edit_note(note_id):
     if request.method == 'POST':
         note.title = request.form.get('title')
         note.content = request.form.get('content')
+        tag_input = request.form.get('tag')
+        
+        if tag_input:
+            note.tags.clear()
+            
+            tag_list = tag_input.strip().split()
+            for raw_tag in tag_list:
+                tag_name = raw_tag.lstrip('#')
+                tag = Tag.query.filter_by(name=tag_name).first()
+                if not tag:
+                    tag = Tag(name=tag_name)
+                note.tags.append(tag)
         db.session.commit()  # 💾 Lưu lại thay đổi vào database
         # return redirect(url_for('note_detail', note_id=note.id))  # quay lại trang chi tiết
         return redirect(url_for('note'))
-    return render_template('edit_note.html', note=note)
+    return render_template('edit_note.html', note=note, tags =tags)
 
 
 #  xóa ghi chú
