@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import *
 from functools import wraps 
 import re
-# setup app
+# ------------------------------------------------------------------------------setup app------------------------------------------
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tetirgjkslvo1324314hh43hbhf4345j3h4gh5'
 # app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///D:\PYTHON\flask\NOTES_WEB\instance\user.db'
@@ -14,7 +14,7 @@ app.config['SQLALCHEMEMY_TRACK_MODIFICATIONS'] = False
 
 
 
-
+# ---------------------------------tạo database--------------------------------------------
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -29,7 +29,7 @@ class User(UserMixin,db.Model):
     role = db.Column(db.String(100),default = 'user')
     
 
-
+# bảng trung gian giữa  Note và tag 
 note_tag = db.Table('note_tag',
                     db.Column('note_id',db.Integer,db.ForeignKey('note.id')),
                     db.Column('Tag_id',db.Integer,db.ForeignKey('tag.id'))
@@ -45,12 +45,12 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     tags = db.relationship('Tag', secondary = note_tag, backref = 'notes')
-
+# bảng tag
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100), unique = True)
 
-# tải dữ liệu người dùng
+# --------------------------------------------------------------tải dữ liệu người dùng-------------------------------------
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -65,7 +65,7 @@ def home():
 def main():
     return render_template('main.html')
 
-# đăng nhập
+# --------------------------------------------------------------đăng nhập-------------------------------------------
 @app.route('/login', methods = ['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -83,7 +83,7 @@ def login():
             return redirect(url_for('main'))
     return render_template('login.html')
 
-#  đăng ký
+#---------------------------------------------------------------đăng ký------------------------------------------------------
 @app.route('/register', methods = ['GET','POST'])
 def register():
     if request.method == 'POST':
@@ -116,7 +116,7 @@ def logout():
 #  làm sạch chuỗi tag
 def clear_tag(tags):
     return re.findall(r'#\w+', tags)
-#  chức năng ghi chú 
+# ----------------------------------------------------------------chức năng ghi chú----------------------------------------------------------------- 
 @app.route('/add', methods = ['GET','POST'])
 @login_required
 def add():
@@ -142,6 +142,7 @@ def add():
         return redirect(url_for('main'))
     return render_template('add.html')
 
+# ------------------------------------------sửa note--------------------------------
 @app.route('/note/<int:note_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_note(note_id):
@@ -174,7 +175,7 @@ def edit_note(note_id):
     return render_template('edit_note.html', note=note, tags =tags)
 
 
-#  xóa ghi chú
+#  ----------------------------------------------xóa ghi chú------------------------------------------
 @app.route('/note/<int:note_id>/remove')
 @login_required
 def remove(note_id):
@@ -185,7 +186,7 @@ def remove(note_id):
     db.session.commit()
     return redirect(url_for('note'))    
 
-
+# ---------------------------------------------hiện ghi chú--------------------------------------------
 @app.route('/note')
 @login_required
 def note():
