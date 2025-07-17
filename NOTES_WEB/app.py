@@ -2,18 +2,20 @@ from flask import Flask, render_template, url_for, redirect,flash, abort ,reques
 from flask_login import LoginManager,login_user, logout_user,login_required,current_user,UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 from datetime import *
 from functools import wraps 
 import re
+import os
 # ------------------------------------------------------------------------------setup app------------------------------------------
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tetirgjkslvo1324314hh43hbhf4345j3h4gh5'
 # app.config['SQLALCHEMY_DATABASE_URI'] = r'sqlite:///D:\PYTHON\flask\NOTES_WEB\instance\user.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://test01:123@localhost/NOTE?driver=ODBC+Driver+17+for+SQL+Server'
 app.config['SQLALCHEMEMY_TRACK_MODIFICATIONS'] = False
-
-
-
+# setup uploads file [txt, png,...]
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGHT'] = 16*1024*1024 # giới hạn file là 16MB
 # ---------------------------------tạo database--------------------------------------------
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -169,8 +171,7 @@ def edit_note(note_id):
                 if not tag:
                     tag = Tag(name=tag_name)
                 note.tags.append(tag)
-        db.session.commit()  # 💾 Lưu lại thay đổi vào database
-        # return redirect(url_for('note_detail', note_id=note.id))  # quay lại trang chi tiết
+        db.session.commit() 
         return redirect(url_for('note'))
     return render_template('edit_note.html', note=note, tags =tags)
 
@@ -199,6 +200,38 @@ def note():
 #     db.session.add(user)
 #     db.session.commit()
 #     return redirect(url_for('login'))
+
+# vào trang admin
+@app.route('/admin')
+@login_required
+def admin():
+    if current_user.role != 'admin':
+        abort(403)
+    return render_template('admin.html')
+# --------------------------------uploads---------------------------------
+@app.route('/upload', methods = ['GET',"POST"])
+@login_required
+def file_upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            filename = secure_filename(file.filename)
+            user_folder = os.path.join(app.config['UPLOAD_FOLDER'],str(current_user.id))
+            os.makedirs(user_folder, exist_ok=True)
+            file.save(os.path.join(user_folder,filename))
+            return redirect(url_for('files'))
+    return render_template('upload.html')
+            
+@app.route('/files')
+@login_required
+def files():
+    user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(current_user.id))
+    try:
+        files = os.listdir(user_folder)
+    except FileExistsError:
+        files =[]
+    return render_template('files.html', files = files)
+
 
 
 #  run app
